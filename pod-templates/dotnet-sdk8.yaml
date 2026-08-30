@@ -1,0 +1,26 @@
+# clouds.kubernetes.templates[]
+- name: dotnet-sdk8
+  label: dotnet
+  idleMinutes: 5
+  podRetention: "never"
+  containers:
+    - name: dotnet
+      image: mcr.microsoft.com/dotnet/sdk:8.0
+      command: sleep
+      args: 99d
+      ttyEnabled: true
+      workingDir: /home/jenkins/agent
+      envVars:
+        - envVar:
+            key: DOTNET_CLI_TELEMETRY_OPTOUT
+            value: "1"
+        - envVar:
+            key: NUGET_PACKAGES
+            value: /home/jenkins/agent/.nuget
+      resourceRequestCpu: "1"
+      resourceRequestMemory: "2Gi"
+      resourceLimitCpu: "2"
+      resourceLimitMemory: "4Gi"
+  volumes:
+    - emptyDirVolume:
+        mountPath: /home/jenkins/agent/.nuget

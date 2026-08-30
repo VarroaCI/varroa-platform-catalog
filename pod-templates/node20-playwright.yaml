@@ -1,6 +1,15 @@
 - name: node20-pw
   label: node20 playwright
+  idleMinutes: 5
+  podRetention: "never"
   containers:
     - name: node
-      image: mcr.microsoft.com/playwright:v1.44-jammy
+      image: mcr.microsoft.com/playwright:v1.62.1-noble
+      command: sleep
+      args: 99d
+      ttyEnabled: true
+      workingDir: /home/jenkins/agent
+      resourceRequestCpu: "500m"
       resourceRequestMemory: 3Gi
+      resourceLimitCpu: "2"
+      resourceLimitMemory: 4Gi

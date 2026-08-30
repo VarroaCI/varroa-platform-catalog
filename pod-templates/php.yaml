@@ -1,0 +1,21 @@
+# clouds.kubernetes.templates[]
+# The composer image bundles PHP + Composer in one container, so pipelines
+# don't have to juggle a sidecar just to run `composer install`.
+- name: php
+  label: php
+  idleMinutes: 5
+  podRetention: "never"
+  containers:
+    - name: php
+      image: composer:2.8
+      command: sleep
+      args: 99d
+      ttyEnabled: true
+      workingDir: /home/jenkins/agent
+      resourceRequestCpu: "500m"
+      resourceRequestMemory: "1Gi"
+      resourceLimitCpu: "1"
+      resourceLimitMemory: "2Gi"
+  volumes:
+    - emptyDirVolume:
+        mountPath: /tmp/composer-cache

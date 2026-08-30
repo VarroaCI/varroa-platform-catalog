@@ -1,0 +1,36 @@
+items:
+  - kind: pipeline
+    name: rust-ci
+    displayName: "Rust CI Smoke"
+    description: "Scaffolds a crate with cargo new and runs its tests on the rust agent. Fully offline — no external dependencies, no credentials."
+    definition:
+      script: |
+        pipeline {
+            agent { label 'rust' }
+            options {
+                timeout(time: 10, unit: 'MINUTES')
+            }
+            stages {
+                stage('Test') {
+                    steps {
+                        container('rust') {
+                            sh '''
+                                cargo new smoke --vcs none
+                                cd smoke
+                                cat >> src/main.rs <<'EOF'
+
+        #[cfg(test)]
+        mod tests {
+            #[test]
+            fn addition() {
+                assert_eq!(2 + 2, 4);
+            }
+        }
+        EOF
+                                cargo test
+                            '''
+                        }
+                    }
+                }
+            }
+        }

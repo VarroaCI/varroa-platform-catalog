@@ -1,0 +1,11 @@
+items:
+  - kind: freeStyle
+    name: nightly-cleanup
+    displayName: "Nightly Workspace Cleanup"
+    description: "Legacy-style freestyle cron job — real fleets always carry a few."
+    triggers:
+      - cron:
+          spec: "H 2 * * *"
+    builders:
+      - shell:
+          command: "echo nightly cleanup run && df -h | head -5"

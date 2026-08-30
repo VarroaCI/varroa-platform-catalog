@@ -1,0 +1,38 @@
+items:
+  - kind: pipeline
+    name: python-ci
+    displayName: "Python CI Smoke"
+    description: "Runs a stdlib unittest suite on the python312 agent. Fully offline — no pip install, no credentials."
+    definition:
+      script: |
+        pipeline {
+            agent { label 'python' }
+            options {
+                timeout(time: 10, unit: 'MINUTES')
+            }
+            stages {
+                stage('Test') {
+                    steps {
+                        container('python') {
+                            sh '''
+                                mkdir -p smoke && cd smoke
+                                cat > test_smoke.py <<'EOF'
+        import unittest
+
+
+        class SmokeTest(unittest.TestCase):
+            def test_addition(self):
+                self.assertEqual(2 + 2, 4)
+
+
+        if __name__ == "__main__":
+            unittest.main()
+        EOF
+                                python --version
+                                python -m unittest discover -v
+                            '''
+                        }
+                    }
+                }
+            }
+        }

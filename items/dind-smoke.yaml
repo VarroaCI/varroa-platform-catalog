@@ -1,0 +1,24 @@
+items:
+  - kind: pipeline
+    name: dind-smoke-test
+    displayName: "DinD Smoke Test"
+    description: "Runs docker run --rm hello-world inside the privileged dind pod template."
+    definition:
+      script: |
+        pipeline {
+            agent { label 'dind' }
+            options {
+                timeout(time: 10, unit: 'MINUTES')
+            }
+            stages {
+                stage('Docker hello-world') {
+                    steps {
+                        container('dind') {
+                            sh 'timeout 60 sh -c "until docker info >/dev/null 2>&1; do sleep 2; done"'
+                            sh 'docker version'
+                            sh 'docker run --rm hello-world'
+                        }
+                    }
+                }
+            }
+        }

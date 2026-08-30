@@ -1,0 +1,34 @@
+items:
+  - kind: pipeline
+    name: node-ci
+    displayName: "Node CI Smoke"
+    description: "Runs a test with Node's built-in test runner on the node20-playwright agent. Fully offline — no npm install, no credentials."
+    definition:
+      script: |
+        pipeline {
+            agent { label 'node20' }
+            options {
+                timeout(time: 10, unit: 'MINUTES')
+            }
+            stages {
+                stage('Test') {
+                    steps {
+                        container('node') {
+                            sh '''
+                                mkdir -p smoke && cd smoke
+                                cat > smoke.test.mjs <<'EOF'
+        import test from 'node:test';
+        import assert from 'node:assert/strict';
+
+        test('addition', () => {
+          assert.equal(2 + 2, 4);
+        });
+        EOF
+                                node --version
+                                node --test
+                            '''
+                        }
+                    }
+                }
+            }
+        }

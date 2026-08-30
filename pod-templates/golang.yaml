@@ -1,0 +1,21 @@
+# clouds.kubernetes.templates[]
+- name: golang
+  label: golang
+  idleMinutes: 5
+  podRetention: "never"
+  containers:
+    - name: golang
+      image: golang:1.26-bookworm
+      command: sleep
+      args: 99d
+      ttyEnabled: true
+      workingDir: /home/jenkins/agent
+      resourceRequestCpu: "2"
+      resourceRequestMemory: "4Gi"
+      resourceLimitCpu: "4"
+      resourceLimitMemory: "8Gi"
+  volumes:
+    - emptyDirVolume:
+        mountPath: /go/pkg/mod
+    - emptyDirVolume:
+        mountPath: /root/.cache/go-build

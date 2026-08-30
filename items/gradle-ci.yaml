@@ -1,0 +1,50 @@
+items:
+  - kind: pipeline
+    name: gradle-ci
+    displayName: "Gradle CI Smoke"
+    description: "Compiles and tests a minimal Java project with the Gradle bundled in the gradle-jdk21 agent image. Needs network access to Maven Central for the JUnit test dependency, no credentials."
+    definition:
+      script: |
+        pipeline {
+            agent { label 'gradle' }
+            options {
+                timeout(time: 15, unit: 'MINUTES')
+            }
+            stages {
+                stage('Build and test') {
+                    steps {
+                        container('gradle') {
+                            sh '''
+                                mkdir -p smoke/src/test/java/demo && cd smoke
+                                cat > settings.gradle <<'EOF'
+        rootProject.name = 'smoke'
+        EOF
+                                cat > build.gradle <<'EOF'
+        plugins { id 'java' }
+        repositories { mavenCentral() }
+        dependencies {
+            testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+            testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        }
+        test { useJUnitPlatform() }
+        EOF
+                                cat > src/test/java/demo/SmokeTest.java <<'EOF'
+        package demo;
+
+        import org.junit.jupiter.api.Test;
+        import static org.junit.jupiter.api.Assertions.assertEquals;
+
+        class SmokeTest {
+            @Test
+            void addition() {
+                assertEquals(4, 2 + 2);
+            }
+        }
+        EOF
+                                gradle --no-daemon --console=plain test
+                            '''
+                        }
+                    }
+                }
+            }
+        }

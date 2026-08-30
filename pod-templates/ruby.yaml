@@ -1,0 +1,19 @@
+# clouds.kubernetes.templates[]
+- name: ruby
+  label: ruby
+  idleMinutes: 5
+  podRetention: "never"
+  containers:
+    - name: ruby
+      image: ruby:3.3-slim
+      command: sleep
+      args: 99d
+      ttyEnabled: true
+      workingDir: /home/jenkins/agent
+      resourceRequestCpu: "500m"
+      resourceRequestMemory: "1Gi"
+      resourceLimitCpu: "1"
+      resourceLimitMemory: "2Gi"
+  volumes:
+    - emptyDirVolume:
+        mountPath: /usr/local/bundle

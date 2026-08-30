@@ -1,0 +1,60 @@
+items:
+  - kind: pipeline
+    name: maven-ci
+    displayName: "Maven CI Smoke"
+    description: "Builds and tests a minimal Maven project on the maven-jdk21 agent. Uses the maven3 tool installer, so compose the global-tools JCasC item alongside it. Needs network access to Maven Central, no credentials."
+    definition:
+      script: |
+        pipeline {
+            agent { label 'maven' }
+            options {
+                timeout(time: 15, unit: 'MINUTES')
+            }
+            tools {
+                maven 'maven3'
+            }
+            stages {
+                stage('Build and test') {
+                    steps {
+                        container('maven') {
+                            sh '''
+                                mkdir -p smoke/src/test/java && cd smoke
+                                cat > pom.xml <<'EOF'
+        <project xmlns="http://maven.apache.org/POM/4.0.0">
+          <modelVersion>4.0.0</modelVersion>
+          <groupId>com.example</groupId>
+          <artifactId>smoke</artifactId>
+          <version>1.0.0</version>
+          <packaging>jar</packaging>
+          <properties>
+            <maven.compiler.release>21</maven.compiler.release>
+            <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+          </properties>
+          <dependencies>
+            <dependency>
+              <groupId>junit</groupId>
+              <artifactId>junit</artifactId>
+              <version>4.13.2</version>
+              <scope>test</scope>
+            </dependency>
+          </dependencies>
+        </project>
+        EOF
+                                cat > src/test/java/SmokeTest.java <<'EOF'
+        import org.junit.Test;
+        import static org.junit.Assert.assertEquals;
+
+        public class SmokeTest {
+            @Test
+            public void addition() {
+                assertEquals(4, 2 + 2);
+            }
+        }
+        EOF
+                                mvn -B -ntp test
+                            '''
+                        }
+                    }
+                }
+            }
+        }

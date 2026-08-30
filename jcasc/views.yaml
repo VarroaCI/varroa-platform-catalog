@@ -1,0 +1,16 @@
+jenkins:
+  views:
+    - all:
+        name: all
+    - list:
+        name: CI
+        includeRegex: ".*(smoke|seed|nightly|generated).*"
+        recurse: true
+        columns:
+          - status
+          - weather
+          - jobName
+          - lastSuccess
+          - lastFailure
+          - lastDuration
+          - buildButton

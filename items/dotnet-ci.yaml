@@ -1,0 +1,26 @@
+items:
+  - kind: pipeline
+    name: dotnet-ci
+    displayName: ".NET CI Smoke"
+    description: "Scaffolds an xUnit project with dotnet new and runs the tests on the dotnet-sdk8 agent. Needs network access to nuget.org for restore, no credentials."
+    definition:
+      script: |
+        pipeline {
+            agent { label 'dotnet' }
+            options {
+                timeout(time: 15, unit: 'MINUTES')
+            }
+            stages {
+                stage('Test') {
+                    steps {
+                        container('dotnet') {
+                            sh '''
+                                dotnet new xunit -o smoke
+                                cd smoke
+                                dotnet test --nologo
+                            '''
+                        }
+                    }
+                }
+            }
+        }

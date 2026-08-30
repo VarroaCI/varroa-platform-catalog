@@ -1,0 +1,37 @@
+tool:
+  git:
+    installations:
+      - name: Default
+        home: git
+  jdk:
+    installations:
+      - name: jdk21
+        home: /opt/java/openjdk
+  maven:
+    installations:
+      - name: maven3
+        properties:
+          - installSource:
+              installers:
+                - maven:
+                    id: "3.9.9"
+  nodejs:
+    installations:
+      - name: node20
+        home: ""
+        properties:
+          - installSource:
+              installers:
+                - nodeJSInstaller:
+                    id: "20.17.0"
+                    npmPackagesRefreshHours: 72
+
+unclassified:
+  globalConfigFiles:
+    configs:
+      - mavenSettings:
+          id: global-maven-settings
+          name: "Global Maven settings"
+          comment: "Managed by the Varroa platform catalog"
+          content: |
+            <settings/>
