@@ -1,0 +1,39 @@
+# External-collaborator access, fenced to one folder subtree. Contractors can
+# see and run jobs under the `external` folder and nothing else — they get no
+# global grants at all, so every other job is invisible to them.
+#
+# Rename the folder and group, then:
+#
+#   kubectl apply -n varroa-system -f rbac/contractor.yaml
+apiVersion: varroa.dev/v1alpha1
+kind: JenkinsRole
+metadata:
+  name: contractor
+spec:
+  roleType: Item
+  description: Read and run jobs within a designated folder subtree only.
+  permissions:
+    - hudson.model.Item.Read
+    - hudson.model.Item.Discover
+    - hudson.model.Item.Build
+    - hudson.model.Item.Cancel
+---
+apiVersion: varroa.dev/v1alpha1
+kind: JenkinsRoleBinding
+metadata:
+  name: contractors-external
+spec:
+  roleRef: contractor
+  subjects:
+    - kind: Group
+      name: contractors
+  jenkinsScope:
+    type: Folder
+    folder: external
+    propagate: Subtree
+# Prefer folder scope when a folder is the security boundary. If contractors
+# work on a naming pattern instead, scope by regex over full item names:
+#
+#   jenkinsScope:
+#     type: Pattern
+#     pattern: "external/.*"
