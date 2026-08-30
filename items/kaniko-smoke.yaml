@@ -1,0 +1,33 @@
+items:
+  - kind: pipeline
+    name: kaniko-smoke
+    displayName: "Kaniko Smoke Test"
+    description: "Builds an in-workspace Dockerfile with kaniko --no-push, proving rootless image builds work. Needs network access to pull the base image, no registry credentials."
+    definition:
+      script: |
+        pipeline {
+            agent { label 'kaniko' }
+            options {
+                timeout(time: 15, unit: 'MINUTES')
+            }
+            stages {
+                stage('Build (no push)') {
+                    steps {
+                        container('kaniko') {
+                            sh '''
+                                mkdir -p smoke && cd smoke
+                                cat > Dockerfile <<'EOF'
+        FROM alpine:3.20
+        RUN echo built by kaniko > /built.txt
+        CMD ["cat", "/built.txt"]
+        EOF
+                                /kaniko/executor \
+                                    --context dir://$(pwd) \
+                                    --dockerfile Dockerfile \
+                                    --no-push
+                            '''
+                        }
+                    }
+                }
+            }
+        }

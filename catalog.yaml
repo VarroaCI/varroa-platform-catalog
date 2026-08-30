@@ -320,6 +320,14 @@ items:
 
   # ---- Items: demos ----
   - type: item
+    name: kaniko-smoke
+    displayName: "Kaniko Smoke Test"
+    description: "kaniko --no-push build of an in-workspace Dockerfile; no registry credentials."
+    path: items/kaniko-smoke.yaml
+    version: "1.0.0"
+    tags: [job, kaniko, images, smoke]
+
+  - type: item
     name: dind-smoke
     displayName: "DinD Smoke Test"
     description: "docker run hello-world inside the privileged dind agent, waiting for the daemon first."
