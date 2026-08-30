@@ -2,11 +2,11 @@ items:
   - kind: pipeline
     name: node-ci
     displayName: "Node CI Smoke"
-    description: "Runs a test with Node's built-in test runner on the node20-playwright agent. Fully offline — no npm install, no credentials."
+    description: "Runs a test with Node's built-in test runner on the node-playwright agent. Fully offline — no npm install, no credentials."
     definition:
       script: |
         pipeline {
-            agent { label 'node20' }
+            agent { label 'node' }
             options {
                 timeout(time: 10, unit: 'MINUTES')
             }

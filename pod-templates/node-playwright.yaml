@@ -1,5 +1,9 @@
-- name: node20-pw
-  label: node20 playwright
+# clouds.kubernetes.templates[]
+# The Playwright image bundles the Node version Playwright currently supports
+# (Node 24 as of v1.62) plus all browsers. Pin a different Playwright tag if
+# your builds need a specific Node line.
+- name: node-playwright
+  label: node playwright
   idleMinutes: 5
   podRetention: "never"
   containers:

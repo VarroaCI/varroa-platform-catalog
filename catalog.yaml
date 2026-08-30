@@ -29,11 +29,11 @@ items:
     tags: [java, gradle, jdk21]
 
   - type: podtemplate
-    name: node20-playwright
-    displayName: "Node 20 + Playwright"
-    description: "Node 20 agent preloaded with Playwright browsers for end-to-end UI test stages."
-    path: pod-templates/node20-playwright.yaml
-    version: "3.0.0"
+    name: node-playwright
+    displayName: "Node + Playwright"
+    description: "Node agent preloaded with Playwright browsers for end-to-end UI test stages; the image bundles the Node version Playwright supports."
+    path: pod-templates/node-playwright.yaml
+    version: "1.0.0"
     tags: [node, e2e, playwright]
 
   - type: podtemplate
@@ -256,7 +256,7 @@ items:
   - type: item
     name: node-ci
     displayName: "Node CI Smoke"
-    description: "node --test with the built-in runner on the node20-playwright agent; fully offline."
+    description: "node --test with the built-in runner on the node-playwright agent; fully offline."
     path: items/node-ci.yaml
     version: "1.0.0"
     tags: [job, ci, node]

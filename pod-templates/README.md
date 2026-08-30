@@ -25,5 +25,8 @@ Conventions used here:
   Jenkins credentials injected by the pipeline — see each file's header
   comment.
 
-Every template has a matching runnable smoke item under `items/` that proves
-the agent schedules and the toolchain works.
+Language templates and the container/IaC builders have matching runnable
+smoke items under `items/` that prove the agent schedules and the toolchain
+works. The credentialed cloud CLIs (aws-cli, gcloud, azure-cli, ansible,
+packer) ship without smoke items because a meaningful exercise needs real
+cloud credentials.
