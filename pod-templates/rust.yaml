@@ -1,0 +1,19 @@
+# clouds.kubernetes.templates[]
+- name: rust
+  label: rust
+  idleMinutes: 5
+  podRetention: "never"
+  containers:
+    - name: rust
+      image: rust:1.89-slim
+      command: sleep
+      args: 99d
+      ttyEnabled: true
+      workingDir: /home/jenkins/agent
+      resourceRequestCpu: "1"
+      resourceRequestMemory: "2Gi"
+      resourceLimitCpu: "4"
+      resourceLimitMemory: "4Gi"
+  volumes:
+    - emptyDirVolume:
+        mountPath: /usr/local/cargo/registry

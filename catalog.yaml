@@ -1,38 +1,159 @@
 apiVersion: "1"
 name: varroa-platform-catalog
-description: "Blessed platform catalog for Varroa — JCasC templates, plugins, pod templates, Jobs, and RBAC curated for production Jenkins controllers."
+description: "Curated platform catalog for Varroa — pod templates, plugin sets, job definitions, and JCasC fragments for production Jenkins controllers."
 
 items:
-  # ---- Pod Templates ----
+  # ---- Pod Templates: languages ----
+  - type: podtemplate
+    name: golang
+    displayName: "Go Agent"
+    description: "Go 1.26 agent with module and build caches; sized for cgo and -race builds."
+    path: pod-templates/golang.yaml
+    version: "1.0.0"
+    tags: [go, golang]
+
   - type: podtemplate
     name: maven-jdk21
     displayName: "Maven + JDK 21 Agent"
-    description: "Kubernetes agent pod with Maven 3.9 and Temurin JDK 21, 2Gi heap, ephemeral .m2 cache volume."
+    description: "Temurin JDK 21 agent with an ephemeral .m2 cache. Pair with the global-tools item for the maven3 tool installer."
     path: pod-templates/maven-jdk21.yaml
     version: "1.4.0"
     tags: [java, maven, jdk21]
 
   - type: podtemplate
-    name: node20-playwright
-    displayName: "Node 20 + Playwright"
-    description: "Node 20 agent preloaded with Playwright browsers for end-to-end UI test stages."
-    path: pod-templates/node20-playwright.yaml
-    version: "2.1.0"
+    name: gradle-jdk21
+    displayName: "Gradle + JDK 21 Agent"
+    description: "Gradle 8 on JDK 21 with a .gradle cache volume — Gradle is bundled in the image, no tool installer needed."
+    path: pod-templates/gradle-jdk21.yaml
+    version: "1.0.0"
+    tags: [java, gradle, jdk21]
+
+  - type: podtemplate
+    name: node-playwright
+    displayName: "Node + Playwright"
+    description: "Node agent preloaded with Playwright browsers for end-to-end UI test stages; the image bundles the Node version Playwright supports."
+    path: pod-templates/node-playwright.yaml
+    version: "1.0.0"
     tags: [node, e2e, playwright]
 
   - type: podtemplate
+    name: python312
+    displayName: "Python 3.12 Agent"
+    description: "Slim Python 3.12 agent for test and scripting stages."
+    path: pod-templates/python312.yaml
+    version: "1.0.0"
+    tags: [python]
+
+  - type: podtemplate
+    name: dotnet-sdk8
+    displayName: ".NET SDK 8 Agent"
+    description: ".NET 8 SDK agent with a NuGet cache volume and telemetry disabled."
+    path: pod-templates/dotnet-sdk8.yaml
+    version: "1.0.0"
+    tags: [dotnet, csharp]
+
+  - type: podtemplate
+    name: rust
+    displayName: "Rust Agent"
+    description: "Rust stable agent with a cargo registry cache."
+    path: pod-templates/rust.yaml
+    version: "1.0.0"
+    tags: [rust, cargo]
+
+  - type: podtemplate
+    name: ruby
+    displayName: "Ruby 3.3 Agent"
+    description: "Slim Ruby 3.3 agent with a bundler gem cache."
+    path: pod-templates/ruby.yaml
+    version: "1.0.0"
+    tags: [ruby]
+
+  - type: podtemplate
+    name: php
+    displayName: "PHP + Composer Agent"
+    description: "PHP 8 agent with Composer bundled in the same container."
+    path: pod-templates/php.yaml
+    version: "1.0.0"
+    tags: [php, composer]
+
+  # ---- Pod Templates: containers and cloud tooling ----
+  - type: podtemplate
     name: dind
     displayName: "Docker-in-Docker Builder"
-    description: "Privileged DinD sidecar with BuildKit for image builds."
+    description: "Privileged Docker 27 daemon for image builds; no idle reuse, pod discarded after each run."
     path: pod-templates/dind.yaml
-    version: "1.0.3"
-    tags: [docker, buildkit]
+    version: "2.0.0"
+    tags: [docker, dind]
+
+  - type: podtemplate
+    name: kaniko
+    displayName: "Kaniko Image Builder"
+    description: "Rootless kaniko executor for building container images without a privileged daemon."
+    path: pod-templates/kaniko.yaml
+    version: "1.0.0"
+    tags: [kaniko, images]
+
+  - type: podtemplate
+    name: terraform
+    displayName: "Terraform Agent"
+    description: "Terraform CLI agent for IaC pipelines; OpenTofu is a drop-in image swap."
+    path: pod-templates/terraform.yaml
+    version: "1.0.0"
+    tags: [terraform, opentofu, iac]
+
+  - type: podtemplate
+    name: aws-cli
+    displayName: "AWS CLI Agent"
+    description: "AWS CLI v2 agent; authenticate via IRSA or Jenkins credentials."
+    path: pod-templates/aws-cli.yaml
+    version: "1.0.0"
+    tags: [aws, cloud]
+
+  - type: podtemplate
+    name: gcloud
+    displayName: "Google Cloud SDK Agent"
+    description: "gcloud agent; authenticate via workload identity or a service-account key credential."
+    path: pod-templates/gcloud.yaml
+    version: "1.0.0"
+    tags: [gcp, cloud]
+
+  - type: podtemplate
+    name: azure-cli
+    displayName: "Azure CLI Agent"
+    description: "az CLI agent; authenticate via service principal or AKS workload identity."
+    path: pod-templates/azure-cli.yaml
+    version: "1.0.0"
+    tags: [azure, cloud]
+
+  - type: podtemplate
+    name: kubectl-helm
+    displayName: "kubectl + Helm Agent"
+    description: "kubectl, helm, and kustomize in one agent for deploy stages."
+    path: pod-templates/kubectl-helm.yaml
+    version: "1.0.0"
+    tags: [kubernetes, helm, deploy]
+
+  - type: podtemplate
+    name: ansible
+    displayName: "Ansible Agent"
+    description: "Ansible agent for configuration-management pipelines; SSH keys come from Jenkins credentials."
+    path: pod-templates/ansible.yaml
+    version: "1.0.0"
+    tags: [ansible, config-management]
+
+  - type: podtemplate
+    name: packer
+    displayName: "Packer Agent"
+    description: "Packer agent for image-bake pipelines."
+    path: pod-templates/packer.yaml
+    version: "1.0.0"
+    tags: [packer, images]
 
   # ---- Plugins ----
   - type: plugin
     name: pipeline-suite
     displayName: "Pipeline Suite"
-    description: "workflow-aggregator + pipeline-stage-view + pipeline-graph-view, pinned to LTS-compatible versions."
+    description: "workflow-aggregator and pipeline-stage-view, pinned to the platform lock."
     path: plugins/pipeline.yaml
     version: bundle
     tags: [pipeline, core]
@@ -48,15 +169,23 @@ items:
   - type: plugin
     name: git-github
     displayName: "Git + GitHub"
-    description: "git, github-branch-source, and multibranch scan webhook plugins."
+    description: "git and github-branch-source for multibranch scanning."
     path: plugins/scm.yaml
     version: bundle
     tags: [git, scm, github]
 
   - type: plugin
+    name: cicd-tools
+    displayName: "CI/CD Tools"
+    description: "job-dsl, docker-workflow, nodejs, jdk-tool, maven, and config-file-provider — the toolchain plugins the global-tools and seed-jobs items rely on."
+    path: plugins/cicd-tools.yaml
+    version: bundle
+    tags: [tools, job-dsl]
+
+  - type: plugin
     name: sonarqube-scanner
     displayName: "SonarQube Scanner"
-    description: "SonarQube scanner + quality-gate webhook integration plugin."
+    description: "SonarQube scanner integration plugin."
     path: plugins/sonar.yaml
     version: bundle
     tags: [quality, sonar]
@@ -64,16 +193,16 @@ items:
   - type: plugin
     name: varroa-theme-plugin
     displayName: "Varroa Theme Plugin"
-    description: "simple-theme-plugin required for Varroa-branded Jenkins CSS themes."
+    description: "simple-theme-plugin required for the Varroa-branded Jenkins CSS theme."
     path: plugins/theme.yaml
     version: bundle
     tags: [theme, simple-theme]
 
-  # ---- Items ----
+  # ---- Items: scaffolds ----
   - type: item
     name: multibranch-pipeline
     displayName: "Multibranch Pipeline"
-    description: "Parameterized multibranch pipeline scaffold scanning a GitHub org with PR discovery + 30-day orphan cleanup."
+    description: "Parameterized multibranch pipeline scanning a GitHub repo with 30-day orphan cleanup."
     path: items/multibranch.yaml
     version: "1.2.0"
     tags: [job, multibranch]
@@ -84,59 +213,189 @@ items:
   - type: item
     name: team-folder
     displayName: "Team Folder + Views"
-    description: "Top-level folder with build-status and failed-only list views and folder-scoped credentials store."
+    description: "Top-level team folder with a failed-jobs list view."
     path: items/team-folder.yaml
     version: "1.0.0"
     tags: [folder, org]
     variables:
       - { name: team, description: "Team name used as folder name", required: true }
 
+  - type: item
+    name: nightly-cleanup
+    displayName: "Nightly Workspace Cleanup"
+    description: "Legacy-style freestyle cron job — real fleets always carry a few."
+    path: items/nightly-freestyle.yaml
+    version: "1.0.0"
+    tags: [job, freestyle, cron]
+
+  # ---- Items: language CI smokes (all self-contained, run green with no setup) ----
+  - type: item
+    name: golang-ci
+    displayName: "Go CI Smoke"
+    description: "go vet + go test on the golang agent; scaffolds its own module in-workspace."
+    path: items/golang-ci.yaml
+    version: "1.0.0"
+    tags: [job, ci, go]
+
+  - type: item
+    name: maven-ci
+    displayName: "Maven CI Smoke"
+    description: "mvn test on the maven-jdk21 agent via the maven3 tool installer; compose global-tools alongside."
+    path: items/maven-ci.yaml
+    version: "1.0.0"
+    tags: [job, ci, java, maven]
+
+  - type: item
+    name: gradle-ci
+    displayName: "Gradle CI Smoke"
+    description: "gradle test on the gradle-jdk21 agent."
+    path: items/gradle-ci.yaml
+    version: "1.0.0"
+    tags: [job, ci, java, gradle]
+
+  - type: item
+    name: node-ci
+    displayName: "Node CI Smoke"
+    description: "node --test with the built-in runner on the node-playwright agent; fully offline."
+    path: items/node-ci.yaml
+    version: "1.0.0"
+    tags: [job, ci, node]
+
+  - type: item
+    name: python-ci
+    displayName: "Python CI Smoke"
+    description: "stdlib unittest on the python312 agent; fully offline."
+    path: items/python-ci.yaml
+    version: "1.0.0"
+    tags: [job, ci, python]
+
+  - type: item
+    name: dotnet-ci
+    displayName: ".NET CI Smoke"
+    description: "dotnet new xunit + dotnet test on the dotnet-sdk8 agent."
+    path: items/dotnet-ci.yaml
+    version: "1.0.0"
+    tags: [job, ci, dotnet]
+
+  - type: item
+    name: rust-ci
+    displayName: "Rust CI Smoke"
+    description: "cargo new + cargo test on the rust agent; fully offline."
+    path: items/rust-ci.yaml
+    version: "1.0.0"
+    tags: [job, ci, rust]
+
+  - type: item
+    name: ruby-ci
+    displayName: "Ruby CI Smoke"
+    description: "Minitest on the ruby agent; fully offline."
+    path: items/ruby-ci.yaml
+    version: "1.0.0"
+    tags: [job, ci, ruby]
+
+  - type: item
+    name: php-ci
+    displayName: "PHP CI Smoke"
+    description: "php -l + composer validate on the php agent; fully offline."
+    path: items/php-ci.yaml
+    version: "1.0.0"
+    tags: [job, ci, php]
+
+  # ---- Items: cloud tooling ----
+  - type: item
+    name: terraform-validate
+    displayName: "Terraform Validate"
+    description: "fmt-check + validate with no backend or providers; shows where a credentialed plan/approve/apply goes."
+    path: items/terraform-validate.yaml
+    version: "1.0.0"
+    tags: [job, terraform, iac]
+
+  - type: item
+    name: helm-render
+    displayName: "Helm Render"
+    description: "helm create + lint + template on the kubectl-helm agent; touches no cluster."
+    path: items/helm-render.yaml
+    version: "1.0.0"
+    tags: [job, helm, deploy]
+
+  # ---- Items: demos ----
+  - type: item
+    name: kaniko-smoke
+    displayName: "Kaniko Smoke Test"
+    description: "kaniko --no-push build of an in-workspace Dockerfile; no registry credentials."
+    path: items/kaniko-smoke.yaml
+    version: "1.0.0"
+    tags: [job, kaniko, images, smoke]
+
+  - type: item
+    name: dind-smoke
+    displayName: "DinD Smoke Test"
+    description: "docker run hello-world inside the privileged dind agent, waiting for the daemon first."
+    path: items/dind-smoke.yaml
+    version: "1.1.0"
+    tags: [job, docker, smoke]
+
+  - type: item
+    name: lib-demo
+    displayName: "Shared Library Demo"
+    description: "Loads the varroa-shared pipeline library and greets from a python agent; compose shared-library alongside."
+    path: items/lib-demo.yaml
+    version: "1.0.0"
+    tags: [job, shared-library]
+
   # ---- JCasC ----
   - type: jcasc
     name: global-security
     displayName: "Global Security Hardening"
-    description: "Disables CLI over remoting, enforces CSRF crumbs, agent-to-controller access control, and markup formatter."
+    description: "Enables remoting security and pins an empty script-approval signature list."
     path: jcasc/security.yaml
     version: "1.1.0"
-    tags: [security, csrf]
-
-  - type: jcasc
-    name: oidc-realm
-    displayName: "OIDC via VarroaSecurityRealm"
-    description: "Wires the VarroaSecurityRealm using operator-injected ${varroa_oidc_*} variables. Zero manual secrets."
-    path: jcasc/oidc.yaml
-    version: "2.0.0"
-    tags: [auth, oidc, dex]
-
-  - type: jcasc
-    name: varroa-theme
-    displayName: "Varroa Branded Theme"
-    description: "Applies the Varroa visual identity (honey/caramel palette, warm surfaces) to the Jenkins UI via simple-theme-plugin."
-    path: jcasc/varroa-theme.yaml
-    version: "1.0.0"
-    tags: [theme, branding, varroa]
+    tags: [security]
 
   - type: jcasc
     name: k8s-cloud
     displayName: "Kubernetes Cloud (In-Cluster)"
-    description: "In-cluster Kubernetes cloud for dynamic agent pods. Namespace and Jenkins URL injected per-controller via varroa_controller_* vars."
+    description: "In-cluster Kubernetes cloud for dynamic agent pods; namespace and Jenkins URL injected per-controller."
     path: jcasc/k8s-cloud.yaml
     version: "1.0.0"
     tags: [kubernetes, agents, cloud]
 
-  # ---- RBAC ----
-  - type: rbac
-    name: developer-roles
-    displayName: "Developer Role Set"
-    description: "Global read + per-folder build/cancel for the 'developers' group."
-    path: rbac/developers.yaml
+  - type: jcasc
+    name: global-tools
+    displayName: "Global Tool Installers"
+    description: "JDK 21, Maven 3.9, Node 20, and git tool installations plus a managed global Maven settings file."
+    path: jcasc/global-tools.yaml
     version: "1.0.0"
-    tags: [rbac, roles]
+    tags: [tools, maven, node]
 
-  - type: rbac
-    name: auditor-role
-    displayName: "Read-Only Auditor"
-    description: "Overall/Read + Job/Read across all folders for compliance auditors. No build or configure rights."
-    path: rbac/auditor.yaml
+  - type: jcasc
+    name: views
+    displayName: "Standard Views"
+    description: "The all view plus a recursive CI list view over smoke, seed, and generated jobs."
+    path: jcasc/views.yaml
     version: "1.0.0"
-    tags: [rbac, audit]
+    tags: [views]
+
+  - type: jcasc
+    name: shared-library
+    displayName: "Varroa Shared Pipeline Library"
+    description: "Registers the varroa-shared global library served from this repo's pipeline-library directory."
+    path: jcasc/shared-library.yaml
+    version: "1.1.0"
+    tags: [shared-library, pipeline]
+
+  - type: jcasc
+    name: seed-jobs
+    displayName: "Seed Jobs (job-dsl)"
+    description: "Seeds a generated folder and a hello pipeline through the JCasC jobs root; requires the cicd-tools plugin set."
+    path: jcasc/seed-jobs.yaml
+    version: "1.0.0"
+    tags: [job-dsl, seed]
+
+  - type: jcasc
+    name: varroa-theme
+    displayName: "Varroa Branded Theme"
+    description: "Applies the Varroa visual identity to the Jenkins UI via simple-theme-plugin."
+    path: jcasc/varroa-theme.yaml
+    version: "1.0.0"
+    tags: [theme, branding]

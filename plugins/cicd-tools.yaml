@@ -1,0 +1,13 @@
+plugins:
+  - artifactId: job-dsl
+    version: "3732.v9a_c49a_61a_313"
+  - artifactId: docker-workflow
+    version: "653.v2f2c08eff0ec"
+  - artifactId: nodejs
+    version: "1.6.6"
+  - artifactId: jdk-tool
+    version: "83.v417146707a_3d"
+  - artifactId: maven-plugin
+    version: "3.27"
+  - artifactId: config-file-provider
+    version: "1013.v73c323e52b_1f"

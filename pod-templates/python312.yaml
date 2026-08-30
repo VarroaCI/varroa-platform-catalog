@@ -1,0 +1,15 @@
+- name: python312
+  label: python
+  idleMinutes: 5
+  podRetention: "never"
+  containers:
+    - name: python
+      image: python:3.12-slim
+      command: sleep
+      args: 99d
+      ttyEnabled: true
+      workingDir: /home/jenkins/agent
+      resourceRequestCpu: "250m"
+      resourceRequestMemory: "512Mi"
+      resourceLimitCpu: "1"
+      resourceLimitMemory: "1Gi"

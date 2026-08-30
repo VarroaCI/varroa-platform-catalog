@@ -1,9 +1,0 @@
-roles:
-  global:
-    - name: developer
-      permissions:
-        - Overall/Read
-        - Job/Build
-        - Job/Cancel
-      assignments:
-        - developers

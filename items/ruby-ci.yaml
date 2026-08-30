@@ -1,0 +1,35 @@
+items:
+  - kind: pipeline
+    name: ruby-ci
+    displayName: "Ruby CI Smoke"
+    description: "Runs a Minitest suite on the ruby agent. Fully offline — stdlib only, no credentials."
+    definition:
+      script: |
+        pipeline {
+            agent { label 'ruby' }
+            options {
+                timeout(time: 10, unit: 'MINUTES')
+            }
+            stages {
+                stage('Test') {
+                    steps {
+                        container('ruby') {
+                            sh '''
+                                mkdir -p smoke && cd smoke
+                                cat > smoke_test.rb <<'EOF'
+        require "minitest/autorun"
+
+        class SmokeTest < Minitest::Test
+          def test_addition
+            assert_equal 4, 2 + 2
+          end
+        end
+        EOF
+                                ruby --version
+                                ruby smoke_test.rb
+                            '''
+                        }
+                    }
+                }
+            }
+        }

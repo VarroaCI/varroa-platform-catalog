@@ -5,7 +5,7 @@
     - name: maven
       image: eclipse-temurin:21-jdk
       command: sleep
-      args: ["infinity"]
+      args: 99d
       resourceRequestCpu: "1"
       resourceRequestMemory: 2Gi
   volumes:

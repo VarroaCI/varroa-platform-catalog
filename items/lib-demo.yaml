@@ -1,0 +1,18 @@
+items:
+  - kind: pipeline
+    name: lib-demo
+    displayName: "Shared Library Demo"
+    description: "Loads the varroa-shared pipeline library and greets from a python agent pod."
+    definition:
+      script: |
+        @Library('varroa-shared') _
+        pipeline {
+            agent { label 'python' }
+            stages {
+                stage('Greet') {
+                    steps {
+                        sayHello 'brood'
+                    }
+                }
+            }
+        }

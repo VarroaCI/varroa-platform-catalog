@@ -1,5 +1,17 @@
 - name: dind
+  label: dind
+  idleMinutes: 0
+  podRetention: "never"
+  yamlMergeStrategy: "merge"
   containers:
     - name: dind
-      image: docker:25-dind
+      image: docker:27-dind
       privileged: true
+      resourceRequestCpu: "500m"
+      resourceRequestMemory: "512Mi"
+      resourceLimitCpu: "2"
+      resourceLimitMemory: "2Gi"
+      envVars:
+        - envVar:
+            key: DOCKER_TLS_CERTDIR
+            value: ""

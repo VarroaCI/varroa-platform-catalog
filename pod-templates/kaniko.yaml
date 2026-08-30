@@ -1,0 +1,13 @@
+- name: kaniko
+  label: kaniko
+  idleMinutes: 0
+  podRetention: "never"
+  containers:
+    - name: kaniko
+      image: gcr.io/kaniko-project/executor:debug
+      command: /busybox/cat
+      ttyEnabled: true
+      resourceRequestCpu: "1"
+      resourceRequestMemory: "2Gi"
+      resourceLimitCpu: "2"
+      resourceLimitMemory: "4Gi"

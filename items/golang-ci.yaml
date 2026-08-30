@@ -1,0 +1,48 @@
+items:
+  - kind: pipeline
+    name: golang-ci
+    displayName: "Go CI Smoke"
+    description: "Scaffolds a Go module in-workspace and runs vet + tests on the golang agent. Runs green with no external repos or credentials."
+    definition:
+      script: |
+        pipeline {
+            agent { label 'golang' }
+            options {
+                timeout(time: 10, unit: 'MINUTES')
+            }
+            stages {
+                stage('Build and test') {
+                    steps {
+                        container('golang') {
+                            sh '''
+                                mkdir -p smoke && cd smoke
+                                go mod init example.com/smoke
+                                cat > main.go <<'EOF'
+        package main
+
+        import "fmt"
+
+        func Greet(name string) string { return "hello " + name }
+
+        func main() { fmt.Println(Greet("varroa")) }
+        EOF
+                                cat > main_test.go <<'EOF'
+        package main
+
+        import "testing"
+
+        func TestGreet(t *testing.T) {
+                if Greet("ci") != "hello ci" {
+                        t.Fatal("unexpected greeting")
+                }
+        }
+        EOF
+                                go vet ./...
+                                go test ./...
+                                go run .
+                            '''
+                        }
+                    }
+                }
+            }
+        }

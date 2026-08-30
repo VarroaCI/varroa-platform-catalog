@@ -1,6 +1,0 @@
-jenkins:
-  securityRealm:
-    varroa:
-      issuer: "${varroa_oidc_issuer}"
-      clientId: "${varroa_oidc_client_id}"
-      clientSecret: "${varroa_oidc_client_secret}"

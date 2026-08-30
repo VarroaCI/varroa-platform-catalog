@@ -1,0 +1,19 @@
+# clouds.kubernetes.templates[]
+- name: gradle-jdk21
+  label: gradle
+  idleMinutes: 5
+  podRetention: "never"
+  containers:
+    - name: gradle
+      image: gradle:8.14-jdk21
+      command: sleep
+      args: 99d
+      ttyEnabled: true
+      workingDir: /home/jenkins/agent
+      resourceRequestCpu: "1"
+      resourceRequestMemory: "2Gi"
+      resourceLimitCpu: "2"
+      resourceLimitMemory: "4Gi"
+  volumes:
+    - emptyDirVolume:
+        mountPath: /home/gradle/.gradle

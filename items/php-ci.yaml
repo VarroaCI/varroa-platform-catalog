@@ -1,0 +1,48 @@
+items:
+  - kind: pipeline
+    name: php-ci
+    displayName: "PHP CI Smoke"
+    description: "Lints a PHP source file and validates a composer.json on the php agent. Fully offline — no composer install, no credentials."
+    definition:
+      script: |
+        pipeline {
+            agent { label 'php' }
+            options {
+                timeout(time: 10, unit: 'MINUTES')
+            }
+            stages {
+                stage('Lint and validate') {
+                    steps {
+                        container('php') {
+                            sh '''
+                                mkdir -p smoke && cd smoke
+                                cat > smoke.php <<'EOF'
+        <?php
+
+        function greet(string $name): string
+        {
+            return "hello " . $name;
+        }
+
+        assert(greet("varroa") === "hello varroa");
+        echo greet("varroa"), PHP_EOL;
+        EOF
+                                cat > composer.json <<'EOF'
+        {
+            "name": "example/smoke",
+            "description": "Catalog smoke fixture",
+            "license": "MIT",
+            "require": {
+                "php": ">=8.0"
+            }
+        }
+        EOF
+                                php -l smoke.php
+                                php smoke.php
+                                composer validate --no-interaction
+                            '''
+                        }
+                    }
+                }
+            }
+        }

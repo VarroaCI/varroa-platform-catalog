@@ -1,0 +1,19 @@
+# clouds.kubernetes.templates[]
+# The Playwright image bundles the Node version Playwright currently supports
+# (Node 24 as of v1.62) plus all browsers. Pin a different Playwright tag if
+# your builds need a specific Node line.
+- name: node-playwright
+  label: node playwright
+  idleMinutes: 5
+  podRetention: "never"
+  containers:
+    - name: node
+      image: mcr.microsoft.com/playwright:v1.62.1-noble
+      command: sleep
+      args: 99d
+      ttyEnabled: true
+      workingDir: /home/jenkins/agent
+      resourceRequestCpu: "500m"
+      resourceRequestMemory: 3Gi
+      resourceLimitCpu: "2"
+      resourceLimitMemory: 4Gi

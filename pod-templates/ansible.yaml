@@ -1,0 +1,18 @@
+# clouds.kubernetes.templates[]
+# SSH inventory access comes from a Jenkins SSH credential wired into the
+# pipeline (sshagent or a mounted key) — the agent image carries no secrets.
+- name: ansible
+  label: ansible
+  idleMinutes: 5
+  podRetention: "never"
+  containers:
+    - name: ansible
+      image: willhallonline/ansible:2.17-alpine-3.20
+      command: sleep
+      args: 99d
+      ttyEnabled: true
+      workingDir: /home/jenkins/agent
+      resourceRequestCpu: "250m"
+      resourceRequestMemory: "512Mi"
+      resourceLimitCpu: "1"
+      resourceLimitMemory: "1Gi"
