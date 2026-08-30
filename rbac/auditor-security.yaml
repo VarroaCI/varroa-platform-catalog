@@ -3,7 +3,7 @@
 # credentials exist (metadata only — Credentials/View never reveals secret
 # values).
 #
-#   kubectl apply -n varroa-system -f rbac/auditor-security.yaml
+#   kubectl apply -f rbac/auditor-security.yaml
 apiVersion: varroa.dev/v1alpha1
 kind: JenkinsRole
 metadata:

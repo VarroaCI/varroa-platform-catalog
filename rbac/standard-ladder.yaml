@@ -1,7 +1,7 @@
 # The classic enterprise access ladder: four global tiers bound to directory
 # groups. Rename the group names under `subjects` to match your IdP, then:
 #
-#   kubectl apply -n varroa-system -f rbac/standard-ladder.yaml
+#   kubectl apply -f rbac/standard-ladder.yaml
 #
 # JenkinsRoleBinding is cluster-scoped and applies to every managed controller
 # unless you add a controllerScope (see rbac/README.md).

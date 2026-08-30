@@ -12,7 +12,7 @@ patterns most organizations need:
 These are Kubernetes CRDs, not catalog items:
 
 ```bash
-kubectl apply -n varroa-system -f rbac/standard-ladder.yaml
+kubectl apply -f rbac/standard-ladder.yaml
 ```
 
 Varroa builds each controller's role-strategy configuration from these

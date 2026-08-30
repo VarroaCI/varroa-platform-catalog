@@ -4,7 +4,7 @@
 #
 # Rename the folder and group, then:
 #
-#   kubectl apply -n varroa-system -f rbac/contractor.yaml
+#   kubectl apply -f rbac/contractor.yaml
 apiVersion: varroa.dev/v1alpha1
 kind: JenkinsRole
 metadata:
