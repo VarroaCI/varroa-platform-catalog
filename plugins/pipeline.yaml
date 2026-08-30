@@ -1,0 +1,5 @@
+plugins:
+  - artifactId: workflow-aggregator
+    version: "608.v67378e9d3db_1"
+  - artifactId: pipeline-stage-view
+    version: "2.34"

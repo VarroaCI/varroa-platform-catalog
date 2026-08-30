@@ -1,0 +1,9 @@
+roles:
+  global:
+    - name: auditor
+      permissions:
+        - Overall/Read
+        - Job/Read
+        - View/Read
+      assignments:
+        - auditors

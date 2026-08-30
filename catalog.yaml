@@ -1,0 +1,142 @@
+apiVersion: "1"
+name: varroa-platform-catalog
+description: "Blessed platform catalog for Varroa — JCasC templates, plugins, pod templates, Jobs, and RBAC curated for production Jenkins controllers."
+
+items:
+  # ---- Pod Templates ----
+  - type: podtemplate
+    name: maven-jdk21
+    displayName: "Maven + JDK 21 Agent"
+    description: "Kubernetes agent pod with Maven 3.9 and Temurin JDK 21, 2Gi heap, ephemeral .m2 cache volume."
+    path: pod-templates/maven-jdk21.yaml
+    version: "1.4.0"
+    tags: [java, maven, jdk21]
+
+  - type: podtemplate
+    name: node20-playwright
+    displayName: "Node 20 + Playwright"
+    description: "Node 20 agent preloaded with Playwright browsers for end-to-end UI test stages."
+    path: pod-templates/node20-playwright.yaml
+    version: "2.1.0"
+    tags: [node, e2e, playwright]
+
+  - type: podtemplate
+    name: dind
+    displayName: "Docker-in-Docker Builder"
+    description: "Privileged DinD sidecar with BuildKit for image builds."
+    path: pod-templates/dind.yaml
+    version: "1.0.3"
+    tags: [docker, buildkit]
+
+  # ---- Plugins ----
+  - type: plugin
+    name: pipeline-suite
+    displayName: "Pipeline Suite"
+    description: "workflow-aggregator + pipeline-stage-view + pipeline-graph-view, pinned to LTS-compatible versions."
+    path: plugins/pipeline.yaml
+    version: bundle
+    tags: [pipeline, core]
+
+  - type: plugin
+    name: kubernetes-agents
+    displayName: "Kubernetes Agents"
+    description: "kubernetes + kubernetes-credentials plugins required for ephemeral pod agents."
+    path: plugins/kubernetes.yaml
+    version: bundle
+    tags: [k8s, agents]
+
+  - type: plugin
+    name: git-github
+    displayName: "Git + GitHub"
+    description: "git, github-branch-source, and multibranch scan webhook plugins."
+    path: plugins/scm.yaml
+    version: bundle
+    tags: [git, scm, github]
+
+  - type: plugin
+    name: sonarqube-scanner
+    displayName: "SonarQube Scanner"
+    description: "SonarQube scanner + quality-gate webhook integration plugin."
+    path: plugins/sonar.yaml
+    version: bundle
+    tags: [quality, sonar]
+
+  - type: plugin
+    name: varroa-theme-plugin
+    displayName: "Varroa Theme Plugin"
+    description: "simple-theme-plugin required for Varroa-branded Jenkins CSS themes."
+    path: plugins/theme.yaml
+    version: bundle
+    tags: [theme, simple-theme]
+
+  # ---- Items ----
+  - type: item
+    name: multibranch-pipeline
+    displayName: "Multibranch Pipeline"
+    description: "Parameterized multibranch pipeline scaffold scanning a GitHub org with PR discovery + 30-day orphan cleanup."
+    path: items/multibranch.yaml
+    version: "1.2.0"
+    tags: [job, multibranch]
+    variables:
+      - { name: repo_name, description: "GitHub repository name", required: true }
+      - { name: org, description: "GitHub organization or user", required: true }
+
+  - type: item
+    name: team-folder
+    displayName: "Team Folder + Views"
+    description: "Top-level folder with build-status and failed-only list views and folder-scoped credentials store."
+    path: items/team-folder.yaml
+    version: "1.0.0"
+    tags: [folder, org]
+    variables:
+      - { name: team, description: "Team name used as folder name", required: true }
+
+  # ---- JCasC ----
+  - type: jcasc
+    name: global-security
+    displayName: "Global Security Hardening"
+    description: "Disables CLI over remoting, enforces CSRF crumbs, agent-to-controller access control, and markup formatter."
+    path: jcasc/security.yaml
+    version: "1.1.0"
+    tags: [security, csrf]
+
+  - type: jcasc
+    name: oidc-realm
+    displayName: "OIDC via VarroaSecurityRealm"
+    description: "Wires the VarroaSecurityRealm using operator-injected ${varroa_oidc_*} variables. Zero manual secrets."
+    path: jcasc/oidc.yaml
+    version: "2.0.0"
+    tags: [auth, oidc, dex]
+
+  - type: jcasc
+    name: varroa-theme
+    displayName: "Varroa Branded Theme"
+    description: "Applies the Varroa visual identity (honey/caramel palette, warm surfaces) to the Jenkins UI via simple-theme-plugin."
+    path: jcasc/varroa-theme.yaml
+    version: "1.0.0"
+    tags: [theme, branding, varroa]
+
+  - type: jcasc
+    name: k8s-cloud
+    displayName: "Kubernetes Cloud (In-Cluster)"
+    description: "In-cluster Kubernetes cloud for dynamic agent pods. Namespace and Jenkins URL injected per-controller via varroa_controller_* vars."
+    path: jcasc/k8s-cloud.yaml
+    version: "1.0.0"
+    tags: [kubernetes, agents, cloud]
+
+  # ---- RBAC ----
+  - type: rbac
+    name: developer-roles
+    displayName: "Developer Role Set"
+    description: "Global read + per-folder build/cancel for the 'developers' group."
+    path: rbac/developers.yaml
+    version: "1.0.0"
+    tags: [rbac, roles]
+
+  - type: rbac
+    name: auditor-role
+    displayName: "Read-Only Auditor"
+    description: "Overall/Read + Job/Read across all folders for compliance auditors. No build or configure rights."
+    path: rbac/auditor.yaml
+    version: "1.0.0"
+    tags: [rbac, audit]

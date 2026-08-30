@@ -1,0 +1,5 @@
+appearance:
+  simpleTheme:
+    elements:
+      - cssUrl:
+          url: "${varroa_frontend_url}/varroa-theme.css"

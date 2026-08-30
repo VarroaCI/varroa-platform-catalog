@@ -1,0 +1,9 @@
+plugins:
+  # These versions MUST match the JenkinsVersionProfile plugin-set lock, or the
+  # operator aborts every controller reconcile with a "plugin version conflict".
+  # The composer also requires an exact pin (unpinned entries are rejected as
+  # Invalid), so track the lock here whenever it is bumped.
+  - artifactId: kubernetes
+    version: "4540.v612369217f87"
+  - artifactId: kubernetes-credentials
+    version: "207.v492f58828b_ed"

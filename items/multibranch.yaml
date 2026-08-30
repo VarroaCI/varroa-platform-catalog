@@ -1,0 +1,10 @@
+items:
+  - kind: multibranch
+    name: ${repo_name}
+    branchSources:
+      - github:
+          repoOwner: ${org}
+          repository: ${repo_name}
+    orphanedItemStrategy:
+      discardOldItems:
+        daysToKeep: 30

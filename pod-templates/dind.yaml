@@ -1,0 +1,5 @@
+- name: dind
+  containers:
+    - name: dind
+      image: docker:25-dind
+      privileged: true

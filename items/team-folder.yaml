@@ -1,0 +1,9 @@
+items:
+  - kind: folder
+    name: ${team}
+    views:
+      - name: Failed
+        kind: listView
+        filterExecutors: false
+        filterQueue: false
+        includeRegex: ".*failed.*"

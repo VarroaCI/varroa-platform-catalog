@@ -1,0 +1,13 @@
+# clouds.kubernetes.templates[]
+- name: maven-jdk21
+  label: maven jdk21
+  containers:
+    - name: maven
+      image: eclipse-temurin:21-jdk
+      command: sleep
+      args: ["infinity"]
+      resourceRequestCpu: "1"
+      resourceRequestMemory: 2Gi
+  volumes:
+    - emptyDirVolume:
+        mountPath: /root/.m2
