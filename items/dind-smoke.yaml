@@ -1,6 +1,6 @@
 items:
   - kind: pipeline
-    name: dind-smoke-test
+    name: dind-smoke
     displayName: "DinD Smoke Test"
     description: "Runs docker run --rm hello-world inside the privileged dind pod template."
     definition:

@@ -221,7 +221,7 @@ items:
       - { name: team, description: "Team name used as folder name", required: true }
 
   - type: item
-    name: nightly-freestyle
+    name: nightly-cleanup
     displayName: "Nightly Workspace Cleanup"
     description: "Legacy-style freestyle cron job — real fleets always carry a few."
     path: items/nightly-freestyle.yaml
