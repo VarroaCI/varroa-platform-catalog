@@ -1,0 +1,18 @@
+# clouds.kubernetes.templates[]
+# Authenticate via IRSA (serviceAccount on the pod) or a Jenkins credential
+# exported as AWS_* env vars in the pipeline — never bake keys into the image.
+- name: aws-cli
+  label: aws
+  idleMinutes: 5
+  podRetention: "never"
+  containers:
+    - name: aws
+      image: amazon/aws-cli:2.17.52
+      command: sleep
+      args: 99d
+      ttyEnabled: true
+      workingDir: /home/jenkins/agent
+      resourceRequestCpu: "250m"
+      resourceRequestMemory: "512Mi"
+      resourceLimitCpu: "1"
+      resourceLimitMemory: "1Gi"

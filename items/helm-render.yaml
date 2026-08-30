@@ -1,0 +1,27 @@
+items:
+  - kind: pipeline
+    name: helm-render
+    displayName: "Helm Render"
+    description: "Scaffolds a chart with helm create, then lints and renders it on the kubectl-helm agent. Fully offline — nothing is applied to any cluster, no credentials."
+    definition:
+      script: |
+        pipeline {
+            agent { label 'helm' }
+            options {
+                timeout(time: 10, unit: 'MINUTES')
+            }
+            stages {
+                stage('Lint and render') {
+                    steps {
+                        container('k8s') {
+                            sh '''
+                                helm version
+                                helm create smoke
+                                helm lint smoke
+                                helm template smoke-release smoke | head -40
+                            '''
+                        }
+                    }
+                }
+            }
+        }

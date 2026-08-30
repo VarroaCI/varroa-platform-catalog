@@ -1,0 +1,50 @@
+items:
+  - kind: pipeline
+    name: terraform-validate
+    displayName: "Terraform Validate"
+    description: "fmt-checks and validates an in-workspace Terraform config on the terraform agent. Fully offline — no providers, no backend, no credentials. Comments show where a real plan/apply with approval goes."
+    definition:
+      script: |
+        pipeline {
+            agent { label 'terraform' }
+            options {
+                timeout(time: 10, unit: 'MINUTES')
+            }
+            stages {
+                stage('Validate') {
+                    steps {
+                        container('terraform') {
+                            sh '''
+                                mkdir -p smoke && cd smoke
+                                cat > main.tf <<'EOF'
+        variable "environment" {
+          type    = string
+          default = "staging"
+        }
+
+        locals {
+          name = format("smoke-%s", var.environment)
+        }
+
+        output "name" {
+          value = local.name
+        }
+        EOF
+                                terraform version
+                                terraform fmt -check
+                                terraform init -backend=false
+                                terraform validate
+                            '''
+                        }
+                    }
+                }
+                // For a real deployment pipeline, add credentialed stages:
+                //
+                //   stage('Plan')  { steps { sh 'terraform init && terraform plan -out=tfplan' } }
+                //   stage('Approve') { steps { input message: 'Apply this plan?' } }
+                //   stage('Apply') { steps { sh 'terraform apply -input=false tfplan' } }
+                //
+                // Backend and provider credentials come from Jenkins credentials
+                // or the pod's cloud identity (IRSA / workload identity).
+            }
+        }
