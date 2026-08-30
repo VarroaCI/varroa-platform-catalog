@@ -1,22 +1,16 @@
-# =============================================================================
-# Varroa Themed Jenkins ComposedBundle
+# Assembles the Varroa branded theme: the simple-theme-plugin pin plus the
+# JCasC fragment that loads the Varroa CSS from the frontend.
 #
-# Assembles the Varroa branded theme — the simple-theme-plugin plus JCasC
-# configuration that loads the Varroa CSS from the Varroa frontend.
-#
-# Usage:
-#   1. Register the platform catalog with a CatalogSource:
-#      kubectl apply -f https://raw.githubusercontent.com/varroaci/varroa-platform-catalog/master/catalog-source.yaml
-#   2. Apply this ComposedBundle:
-#      kubectl apply -f examples/varroa-themed-bundle.yaml
-#   3. Reference in a Controller:
+# 1. Register this catalog (see README.md), e.g. with a CatalogSource named
+#    "platform-catalog".
+# 2. kubectl apply -f examples/varroa-themed-bundle.yaml
+# 3. Reference it from a Controller:
 #      spec:
 #        composedBundleRef:
 #          name: varroa-themed-bundle
 #
-# The CatalogItem CRD names use the pattern:
-#   <CatalogSource-name>-<slugified-catalog-item-path>
-# =============================================================================
+# CatalogItem CRD names follow <CatalogSource-name>-<slugified-path>, so
+# adjust the itemRef names below if your CatalogSource is named differently.
 apiVersion: varroa.dev/v1alpha1
 kind: ComposedBundle
 metadata:
@@ -24,7 +18,7 @@ metadata:
   namespace: varroa-system
 spec:
   displayName: "Varroa Branded Theme"
-  description: "Applies the Varroa visual identity to a Jenkins controller — warm honey/caramel palette, rounded surfaces, branded build status colors."
+  description: "Applies the Varroa visual identity to a Jenkins controller."
   jcascMergeStrategy: errorOnConflict
   inputs:
     - itemRef:
