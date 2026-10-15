@@ -11,9 +11,9 @@
       ttyEnabled: true
       workingDir: /home/jenkins/agent
       resourceRequestCpu: "2"
-      resourceRequestMemory: "4Gi"
+      resourceRequestMemory: "5Gi"
       resourceLimitCpu: "4"
-      resourceLimitMemory: "8Gi"
+      resourceLimitMemory: "6Gi"
   volumes:
     - emptyDirVolume:
         mountPath: /go/pkg/mod

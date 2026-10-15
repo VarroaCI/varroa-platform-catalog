@@ -9,7 +9,7 @@ items:
     displayName: "Go Agent"
     description: "Go 1.26 agent with module and build caches; sized for cgo and -race builds."
     path: pod-templates/golang.yaml
-    version: "1.0.0"
+    version: "1.1.0"
     tags: [go, golang]
 
   - type: podtemplate
