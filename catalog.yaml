@@ -202,9 +202,9 @@ items:
   - type: item
     name: multibranch-pipeline
     displayName: "Multibranch Pipeline"
-    description: "Parameterized multibranch pipeline scanning a GitHub repo with 30-day orphan cleanup."
+    description: "Multibranch pipeline for one GitHub repository. It discovers branches, origin pull requests, and fork pull requests, and builds each from its Jenkinsfile."
     path: items/multibranch.yaml
-    version: "1.2.0"
+    version: "1.2.1"
     tags: [job, multibranch]
     variables:
       - { name: repo_name, description: "GitHub repository name", required: true }

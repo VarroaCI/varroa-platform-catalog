@@ -1,10 +1,19 @@
 items:
   - kind: multibranch
     name: ${repo_name}
-    branchSources:
-      - github:
-          repoOwner: ${org}
-          repository: ${repo_name}
-    orphanedItemStrategy:
-      discardOldItems:
-        daysToKeep: 30
+    sourcesList:
+      - branchSource:
+          source:
+            github:
+              repoOwner: ${org}
+              repository: ${repo_name}
+              traits:
+                - gitHubBranchDiscovery:
+                    strategyId: 1
+                - gitHubPullRequestDiscovery:
+                    strategyId: 1
+                - gitHubForkDiscovery:
+                    strategyId: 1
+    projectFactory:
+      workflowBranchProjectFactory:
+        scriptPath: Jenkinsfile
