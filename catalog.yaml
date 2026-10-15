@@ -212,10 +212,10 @@ items:
 
   - type: item
     name: team-folder
-    displayName: "Team Folder + Views"
-    description: "Top-level team folder with a failed-jobs list view."
+    displayName: "Team Folder"
+    description: "Top-level folder for one team. The team variable sets the folder name."
     path: items/team-folder.yaml
-    version: "1.0.0"
+    version: "1.0.1"
     tags: [folder, org]
     variables:
       - { name: team, description: "Team name used as folder name", required: true }
