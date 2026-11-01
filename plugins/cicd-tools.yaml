@@ -8,6 +8,6 @@ plugins:
   - artifactId: jdk-tool
     version: "83.v417146707a_3d"
   - artifactId: maven-plugin
-    version: "3.27"
+    version: "3.28"
   - artifactId: config-file-provider
     version: "1013.v73c323e52b_1f"
