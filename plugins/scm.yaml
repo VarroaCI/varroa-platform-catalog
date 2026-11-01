@@ -1,5 +1,5 @@
 plugins:
   - artifactId: github-branch-source
-    version: "1983.vfa_27ed961853"
+    version: "1986.v801e40614d00"
   - artifactId: git
-    version: "5.10.1"
+    version: "5.11.0"
